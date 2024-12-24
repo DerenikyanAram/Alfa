@@ -9,7 +9,6 @@ import { Product } from '../Service/ProductApiService'; // Убедитесь, �
 const ProductList: React.FC = () => {
     const dispatch = useAppDispatch(); // Используем типизированный dispatch
     const products = useSelector(selectProducts) as Product[]; // Явно указываем, что это массив типа `Product`
-    const loading = useSelector(selectProductsLoading);
     const [showFavorites, setShowFavorites] = useState(false);
 
     useEffect(() => {
