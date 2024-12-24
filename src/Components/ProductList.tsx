@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../Store/store'; // Подключаем типизированный dispatch
 import { fetchProducts, toggleLike, removeProduct } from '../Store/productsSlice';
-import { selectProducts, selectProductsLoading } from '../Store/productsSelector';
+import { selectProducts} from '../Store/productsSelector';
 import ProductCard from './ProductCard';
 import { Product } from '../Service/ProductApiService'; // Убедитесь, что тип `Product` определен в этом файле
 
