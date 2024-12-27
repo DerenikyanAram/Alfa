@@ -3,8 +3,13 @@ import { Product } from '../Service/ProductApiService';
 import { fetchProductsFromApi } from '../Service/ProductApiService';
 
 const saveToLocalStorage = (products: Product[]) => {
-    console.log('Saving to LocalStorage:', products);
-    localStorage.setItem('products', JSON.stringify(products));
+    try {
+        const plainProducts = products.map((product) => JSON.parse(JSON.stringify(product)));
+        console.log('Saving to LocalStorage:', plainProducts);
+        localStorage.setItem('products', JSON.stringify(plainProducts));
+    } catch (error) {
+        console.error('Failed to save to LocalStorage:', error);
+    }
 };
 
 const loadFromLocalStorage = (): Product[] => {
@@ -33,7 +38,7 @@ interface ProductsState {
 }
 
 const initialState: ProductsState = {
-    products: loadFromLocalStorage() || [],
+    products: loadFromLocalStorage(),
     loading: false,
     error: null,
 };
@@ -55,9 +60,11 @@ const productsSlice = createSlice({
             saveToLocalStorage(state.products);
         },
         addProduct: (state, action: PayloadAction<Product>) => {
-            state.products.push(action.payload);
+            console.log('Adding Product:', action.payload);
+            state.products = [...state.products, action.payload];
+            console.log('Updated Products State:', state.products);
             saveToLocalStorage(state.products);
-        },
+        }
     },
     extraReducers: (builder) => {
         builder

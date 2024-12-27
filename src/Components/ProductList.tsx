@@ -5,10 +5,11 @@ import { fetchProducts, toggleLike, removeProduct } from '../Store/productsSlice
 import { selectProducts } from '../Store/productsSelector';
 import ProductCard from './ProductCard';
 import { Product } from '../Service/ProductApiService';
-
+import { useNavigate } from 'react-router-dom';
 
 const ProductList: React.FC = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const products = useSelector(selectProducts) as Product[];
 
     const [showFavorites, setShowFavorites] = useState(false);
@@ -17,16 +18,24 @@ const ProductList: React.FC = () => {
     const itemsPerPage = 10;
 
     useEffect(() => {
-        dispatch(fetchProducts());
-    }, [dispatch]);
+        if (!products.length) {
+            dispatch(fetchProducts());
+        }
+    }, [dispatch, products.length]);
 
     const handleToggleFavorite = () => {
         setShowFavorites((prev) => !prev);
+        setCurrentPage(1); // Сбрасываем текущую страницу на первую
+    };
+
+    const handleCreateProduct = () => {
+        navigate('/create-product');
     };
 
     const filteredProducts = products
         .filter((p: Product) => (showFavorites ? p.isLiked : true))
         .filter((p: Product) => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    console.log('Filtered Products:', filteredProducts);
 
     const paginatedProducts = filteredProducts.slice(
         (currentPage - 1) * itemsPerPage,
@@ -38,6 +47,8 @@ const ProductList: React.FC = () => {
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
     };
+
+    console.log('Redux State ProductsAAAAAAAAAAAAA:', products);
 
     return (
         <div className="product-list">
@@ -52,9 +63,14 @@ const ProductList: React.FC = () => {
                 />
             </div>
 
-            <button className="favorites-button" onClick={handleToggleFavorite}>
-                {showFavorites ? 'Show All' : 'Show Favorites'}
-            </button>
+            <div className="button-group">
+                <button className="favorites-button" onClick={handleToggleFavorite}>
+                    {showFavorites ? 'Show All' : 'Show Favorites'}
+                </button>
+                <button className="create-button" onClick={handleCreateProduct}>
+                    Create Product
+                </button>
+            </div>
 
             <div className="products-grid">
                 {paginatedProducts.map((product: Product) => (

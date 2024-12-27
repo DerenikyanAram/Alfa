@@ -28,7 +28,9 @@ export const fetchProductsFromApi = async (): Promise<Product[]> => {
         price: product.price,
         category: product.category,
         images: product.images,
-        image: product.images?.[0] || product.category?.image || 'https://via.placeholder.com/150', // Используем первое изображение или заглушку
+        image: Array.isArray(product.images) && product.images.length > 0
+            ? product.images[0] // Используем первое изображение
+            : product.category?.image || 'https://via.placeholder.com/150',
         isLiked: false,
     }));
 };
