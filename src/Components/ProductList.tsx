@@ -34,7 +34,7 @@ const ProductList: React.FC = () => {
 
     const filteredProducts = products
         .filter((p: Product) => (showFavorites ? p.isLiked : true))
-        .filter((p: Product) => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+        .filter((p: Product) => p.title && p.title.toLowerCase().includes(searchQuery.toLowerCase()))
     console.log('Filtered Products:', filteredProducts);
 
     const paginatedProducts = filteredProducts.slice(
