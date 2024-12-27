@@ -8,7 +8,7 @@ const AppRoutes: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to="/products" replace />} />
+                <Route path="/" element={<Navigate to="/product" replace />} />
                 <Route path="/products" element={<ProductList />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
                 <Route path="/create-product" element={<CreateProductForm />} />
